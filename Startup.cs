@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -5,9 +6,9 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore.Sqlite;
 using ToDo.Data;
 using Microsoft.EntityFrameworkCore;
+using ToDo.Services;
 
 namespace ToDo
 {
@@ -25,6 +26,7 @@ namespace ToDo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ITokenService, TokenService>();
             services.AddDbContext<DataContext>(options => {
                 options.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
             });
@@ -34,6 +36,7 @@ namespace ToDo
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            
 
 
         }
