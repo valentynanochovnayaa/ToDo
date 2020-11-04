@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Entities;
 
-namespace ToDo.Data
+namespace Data.Abstraction
 {
     public interface ITaskRepository
     {
-        Task<Task> GetTask(int id);
-        Task<ICollection<Task>> GetTasks();
+        Task<ToDoItem> GetTask(int id);
+        Task<ICollection<ToDoItem>> GetTasks();
     }
 }

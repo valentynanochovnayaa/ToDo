@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Data.Abstraction;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using ToDo.Models;
 
-namespace ToDo.Data
+namespace Data.Data
 {
     public class TaskRepository: ITaskRepository
     {
@@ -12,13 +12,13 @@ namespace ToDo.Data
         {
             _context = context;
         }
-        public async System.Threading.Tasks.Task<Task> GetTask(int id)
+        public async System.Threading.Tasks.Task<ToDoItem> GetTask(int id)
         {
             var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
             return task;
         }
 
-        public System.Threading.Tasks.Task<ICollection<Task>> GetTasks()
+        public System.Threading.Tasks.Task<ICollection<ToDoItem>> GetTasks()
         {
             throw new System.NotImplementedException();
         }

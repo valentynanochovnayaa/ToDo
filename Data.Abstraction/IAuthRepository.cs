@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using System.Web.Providers.Entities;
 using Domain.Entities;
-using ToDo.Entities;
 
-namespace ToDo.Data
+
+namespace Data.Abstraction
 {
     public interface IAuthRepository
     {

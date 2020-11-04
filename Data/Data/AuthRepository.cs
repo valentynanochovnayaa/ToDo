@@ -1,12 +1,12 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Abstraction;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
-using ToDo.DTO;
-using ToDo.Models;
+using ToDo.Data;
 
-namespace ToDo.Data
+namespace Data.Data
 {
     public class AuthRepository: IAuthRepository
     {

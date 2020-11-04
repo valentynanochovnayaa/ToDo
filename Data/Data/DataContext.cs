@@ -1,11 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ToDo.Models;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace ToDo.Data
+namespace Data.Data
 {
     public class DataContext: DbContext
     {
@@ -16,7 +12,7 @@ namespace ToDo.Data
             builder.UseNpgsql("Host=localhost; Port=5432; Database=tododb; Username=postgres; password=mimicry");
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<Entities.Task> Tasks { get; set; }
+        public DbSet<ToDoItem> Tasks { get; set; }
         
     }
 }

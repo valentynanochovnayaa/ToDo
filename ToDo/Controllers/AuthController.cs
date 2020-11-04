@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration;
+using Data.Abstraction;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using ToDo.Data;
 using ToDo.DTO;
-using ToDo.Models;
 
 namespace ToDo.Controllers
 {

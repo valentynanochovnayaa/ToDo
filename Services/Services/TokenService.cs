@@ -5,12 +5,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Web.Providers.Entities;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using ToDo.Data;
-using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace ToDo.Services
+namespace Services.Services
 {
     public class TokenService: ITokenService
     {
