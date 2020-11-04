@@ -16,7 +16,7 @@ namespace ToDo.Data
             builder.UseNpgsql("Host=localhost; Port=5432; Database=tododb; Username=postgres; password=mimicry");
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<Models.Task> Tasks { get; set; }
+        public DbSet<Entities.Task> Tasks { get; set; }
         
     }
 }

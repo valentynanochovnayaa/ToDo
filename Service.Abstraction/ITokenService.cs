@@ -1,4 +1,4 @@
-﻿using ToDo.Models;
+﻿using System.Web.Providers.Entities;
 
 namespace ToDo.Data
 {

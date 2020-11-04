@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
-using ToDo.DTO;
-using ToDo.Models;
+using System.Web.Providers.Entities;
+using Domain.Entities;
+using ToDo.Entities;
 
 namespace ToDo.Data
 {

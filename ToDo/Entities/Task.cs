@@ -13,7 +13,7 @@ namespace ToDo.Models
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime Deadline { get; set; }
+        public DateTimeOffset Deadline { get; set; }
         public bool IsCompleted { get; set; }
                
     }
