@@ -12,7 +12,16 @@ namespace Data.Data
             builder.UseNpgsql("Host=localhost; Port=5432; Database=tododb; Username=postgres; password=mimicry");
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<ToDoItem> Tasks { get; set; }
+        public DbSet<ToDoItem> ToDoItems { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ToDoItem>()
+                .HasOne(u => u.User)
+                .WithMany(t => t.Tasks)
+                .HasForeignKey(t => t.UserId);
+        }
         
+
     }
 }
