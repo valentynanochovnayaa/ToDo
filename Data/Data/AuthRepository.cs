@@ -2,9 +2,11 @@
 using System.Text;
 using System.Threading.Tasks;
 using Data.Abstraction;
+using Domain.Commands;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using ToDo.Data;
+using ToDo.DTO;
 
 namespace Data.Data
 {
@@ -17,13 +19,15 @@ namespace Data.Data
             _context = context;
             _tokenService = tokenService;
         }
-        public async Task<User> Register(User user, string password)
+        public async Task<User> Register(User user, RegisterUserCommand registerUserCommand, string password)
         {
             byte[] passwordHash, passwordSalt;
             
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+            user.Username = registerUserCommand.Username;
+            user.Email = registerUserCommand.Email;
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
