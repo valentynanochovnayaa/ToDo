@@ -1,10 +1,15 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using Data.Abstraction;
 using Domain.Commands;
+using Domain.Common;
 using Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Service.Abstraction.Dxos;
 using ToDo.Data;
 using ToDo.DTO;
 
@@ -14,24 +19,39 @@ namespace Data.Data
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
-        public AuthRepository(DataContext context, ITokenService tokenService)
+        private readonly IToDoUserDxo _dxo;
+        private readonly UserManager<User> _userManager;
+        public AuthRepository(DataContext context, ITokenService tokenService, IToDoUserDxo dxo, UserManager<User> userManager)
         {
             _context = context;
             _tokenService = tokenService;
+            _dxo = dxo;
+            _userManager = userManager;
         }
-        public async Task<User> Register(User user, RegisterUserCommand registerUserCommand, string password)
+        public async Task<User> Register(RegisterUserCommand registerUserCommand)
         {
-            byte[] passwordHash, passwordSalt;
-            
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-            user.Username = registerUserCommand.Username;
-            user.Email = registerUserCommand.Email;
+            var user = _dxo.Map(registerUserCommand);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<Result<User, Error>> Login(LoginUserCommand loginUserCommand)
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == loginUserCommand.Username);
+            if (user == null)
+            {
+                return new Error(ErrorsEnum.UserNotFound, $"User '{loginUserCommand.Username}' not found");
+            }
+
+            var userSighningResult = await _userManager.CheckPasswordAsync(user, loginUserCommand.Password);
+            if (userSighningResult)
+            {
+                return new User();
+            }
+            return new Error(ErrorsEnum.BadRequest, "Something went wrong");
+        }
+        
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
@@ -39,34 +59,6 @@ namespace Data.Data
             {
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 passwordSalt = hmac.Key;
-            }
-        }
-
-        public async Task<User> Login(string username, string password)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
-            if (user == null)
-                return null;
-            if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            {
-                return null;
-            }
-            return user;
-        }
-
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                for (var i = 0; i < computedHash.Length; i++)
-                {
-                    if (passwordHash[i] != computedHash[i])
-                    {
-                        return false;
-                    }
-                }
-                return true;
             }
         }
     }

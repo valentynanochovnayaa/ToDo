@@ -25,6 +25,13 @@ namespace ToDo.Controllers
         {
             return await SendRequestAsync(request);
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginUserCommand request)
+        {
+            return await SendRequestAsync(request);
+        }
+        
         
     }
 }

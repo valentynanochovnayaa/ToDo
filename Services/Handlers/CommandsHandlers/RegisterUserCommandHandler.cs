@@ -19,8 +19,7 @@ namespace Services.Handlers.CommandsHandlers
         }
         public async Task<Result<Unit, Error>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var user = new User();
-            var createdUser = await _repo.Register(user, request, request.Password);
+            var createdUser = await _repo.Register(request);
             return Unit.Value;
         }
         

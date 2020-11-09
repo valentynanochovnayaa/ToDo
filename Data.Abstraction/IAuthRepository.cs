@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using Domain.Commands;
+using Domain.Common;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using ToDo.DTO;
 
 
@@ -8,7 +11,8 @@ namespace Data.Abstraction
 {
     public interface IAuthRepository
     {
-        Task<User> Register(User user, RegisterUserCommand request, string password);
-        Task<User> Login(string username, string password);
+        Task<User> Register( RegisterUserCommand request);
+        Task<Result<User, Error>> Login(LoginUserCommand request);
+
     }
 }
