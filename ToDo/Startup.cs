@@ -1,5 +1,6 @@
 using AutoMapper;
 using Data.Data;
+using IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using ToDo.Data;
 using Microsoft.EntityFrameworkCore;
 using Services.Services;
+using ToDo.Settings;
 
 namespace ToDo
 {
@@ -25,10 +27,8 @@ namespace ToDo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddDbContext<DataContext>(options => {
-                options.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
-            });
+            services.AddServices(_config);
+            services.Configure<JwtSettings>(_config.GetSection("Jwt"));
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
 
