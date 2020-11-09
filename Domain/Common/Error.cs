@@ -12,8 +12,8 @@
 
         public Error(ErrorsEnum key, string description)
         {
-            key = Key;
-            description = Description;
+            Key = key;
+            Description = description;
         }
     }
 }
