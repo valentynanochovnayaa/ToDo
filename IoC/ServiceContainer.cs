@@ -1,6 +1,7 @@
 ﻿using System;
 using Data.Abstraction;
 using Data.Data;
+using Domain.DTO;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,22 @@ namespace IoC
         {    
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IToDoItemRepository, ToDoItemRepository>();
+            services.AddScoped<IToDoItemDxo, ToDoItemDxo>();
             services.AddScoped<IToDoUserDxo, ToDoUserDxo>();
             var assembly = AppDomain.CurrentDomain.Load("Services");
             services.AddMediatR(assembly);
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<User, Role>(config =>
+                {
+                    config.Password.RequireDigit = false;
+                    config.Password.RequireNonAlphanumeric = false;
+                    config.Password.RequireLowercase = false;
+                    config.Password.RequireUppercase = false;
+                    config.Password.RequiredLength = 7;
+                })
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
+            var cong = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataContext>(options => {
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });

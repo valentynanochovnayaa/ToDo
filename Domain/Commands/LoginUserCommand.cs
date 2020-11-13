@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Domain.Common;
 using MediatR;
+using ToDo.DTO;
 
 namespace Domain.Commands
 {
-    public class LoginUserCommand : IRequest<Result<Unit, Error>>
+    public class LoginUserCommand : IRequest<Result<TokenDto,ErrorsEnum >>
     {
         public LoginUserCommand()
         {

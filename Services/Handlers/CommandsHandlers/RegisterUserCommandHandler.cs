@@ -10,14 +10,14 @@ using ToDo.DTO;
 
 namespace Services.Handlers.CommandsHandlers
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result<Unit, Error>>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result<Unit, ErrorsEnum>>
     {
         private readonly IAuthRepository _repo;
         public RegisterUserCommandHandler(IAuthRepository repo)
         {
             _repo = repo;
         }
-        public async Task<Result<Unit, Error>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit, ErrorsEnum>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var createdUser = await _repo.Register(request);
             return Unit.Value;

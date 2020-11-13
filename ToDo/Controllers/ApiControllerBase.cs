@@ -17,7 +17,7 @@ namespace ToDo.Controllers
             _mediator = mediator ?? throw new ArgumentNullException();
         }
 
-        public async Task<IActionResult> SendRequestAsync<T>(IRequest<Result<T, Error>> request)
+        public async Task<IActionResult> SendRequestAsync<T>(IRequest<Result<T, ErrorsEnum>> request)
         {
             if (!ModelState.IsValid)
             {
@@ -27,11 +27,11 @@ namespace ToDo.Controllers
             var result = await _mediator.Send(request);
             return result.Match(
                 value => Ok(value),
-                error => error.Key switch
+                error => error switch
                 {
-                    ErrorsEnum.UserNotFound => NotFound(error.Key + ": " + error.Description),
-                    ErrorsEnum.Forbidden => Forbid(error.Key + ": " + error.Description),
-                    _ => (IActionResult)BadRequest(error.Key + ": " + error.Description)
+                    ErrorsEnum.UserNotFound => NotFound(),
+                    ErrorsEnum.Forbidden => Forbid(),
+                    _ => (IActionResult)BadRequest()
                 });
         }
         

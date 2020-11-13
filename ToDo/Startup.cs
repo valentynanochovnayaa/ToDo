@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using ToDo.Data;
 using Microsoft.EntityFrameworkCore;
 using Services.Services;
+using ToDo.ExtensionMethods;
 using ToDo.Settings;
 
 namespace ToDo
@@ -29,6 +30,7 @@ namespace ToDo
         {
             services.AddServices(_config);
             services.Configure<JwtSettings>(_config.GetSection("Jwt"));
+            services.AddTokenAuthentication(_config);
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
 
@@ -56,9 +58,10 @@ namespace ToDo
             {
                 app.UseSpaStaticFiles();
             }
-
+            
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

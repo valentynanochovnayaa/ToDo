@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201107183905_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20201110190635_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,10 +50,9 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.ToDoItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("Deadline")
                         .HasColumnType("timestamp with time zone");
@@ -245,7 +244,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.ToDoItem", b =>
                 {
-                    b.HasOne("Domain.Entities.User", "User")
+                    b.HasOne("Domain.Entities.User", null)
                         .WithMany("ToDoItems")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

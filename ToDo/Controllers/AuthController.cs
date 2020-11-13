@@ -23,7 +23,7 @@ namespace ToDo.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserCommand request)
         {
-            return await SendRequestAsync(request);
+           return await SendRequestAsync(request);
         }
 
         [HttpPost("login")]

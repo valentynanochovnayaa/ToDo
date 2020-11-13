@@ -5,7 +5,7 @@ using ToDo.DTO;
 
 namespace Domain.Commands
 {
-    public class RegisterUserCommand : IRequest<Result<Unit, Error>>
+    public class RegisterUserCommand : IRequest<Result<Unit, ErrorsEnum>>
     {
         public RegisterUserCommand()
         {

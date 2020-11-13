@@ -12,7 +12,7 @@ namespace Data.Abstraction
     public interface IAuthRepository
     {
         Task<User> Register( RegisterUserCommand request);
-        Task<Result<User, Error>> Login(LoginUserCommand request);
+        Task<Result<TokenDto, ErrorsEnum>> Login(LoginUserCommand request);
 
     }
 }

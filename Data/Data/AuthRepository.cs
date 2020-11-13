@@ -31,35 +31,24 @@ namespace Data.Data
         public async Task<User> Register(RegisterUserCommand registerUserCommand)
         {
             var user = _dxo.Map(registerUserCommand);
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user, registerUserCommand.Password);
             return user;
         }
 
-        public async Task<Result<User, Error>> Login(LoginUserCommand loginUserCommand)
+        public async Task<Result<TokenDto, ErrorsEnum>> Login(LoginUserCommand loginUserCommand)
         {
             var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == loginUserCommand.Username);
             if (user == null)
             {
-                return new Error(ErrorsEnum.UserNotFound, $"User '{loginUserCommand.Username}' not found");
+                return ErrorsEnum.UserNotFound;
             }
-
             var userSighningResult = await _userManager.CheckPasswordAsync(user, loginUserCommand.Password);
             if (userSighningResult)
             {
-                return new User();
+                var token = _tokenService.CreateToken(user);
+                return new TokenDto(token);
             }
-            return new Error(ErrorsEnum.BadRequest, "Something went wrong");
-        }
-        
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using(var hmac = new HMACSHA512())
-            {
-                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                passwordSalt = hmac.Key;
-            }
+            return ErrorsEnum.BadRequest;
         }
     }
 }

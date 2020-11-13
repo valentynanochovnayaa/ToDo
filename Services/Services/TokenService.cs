@@ -4,27 +4,31 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Web.Providers.Entities;
+using Domain.Commands;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ToDo.Data;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+using User = Domain.Entities.User;
 
 namespace Services.Services
 {
     public class TokenService: ITokenService
     {
-        private readonly SymmetricSecurityKey _key;
+        private readonly string _secret;
         public TokenService(IConfiguration config)
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            _secret = config.GetSection("Jwt").GetSection("secret").Value;
         }
         public string CreateToken(User user)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString())
             };
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            var key = Encoding.ASCII.GetBytes(_secret);
+            var creds = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),
