@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Web.Providers.Entities;
 using Domain.Commands;
+using Domain.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,9 +18,9 @@ namespace Services.Services
     public class TokenService: ITokenService
     {
         private readonly string _secret;
-        public TokenService(IConfiguration config)
+        public TokenService(IOptions<JwtSettings> jwtSettings)
         {
-            _secret = config.GetSection("Jwt").GetSection("secret").Value;
+            _secret = jwtSettings.Value.Secret;
         }
         public string CreateToken(User user)
         {

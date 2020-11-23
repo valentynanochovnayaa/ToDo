@@ -1,6 +1,4 @@
-﻿using System.Data.Entity.Migrations.Model;
-
-namespace ToDo.Settings
+﻿namespace Domain.Settings
 {
     public class JwtSettings
     {

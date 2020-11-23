@@ -7,6 +7,13 @@ namespace Domain.Commands
 {
     public class RegisterUserCommand : IRequest<Result<Unit, ErrorsEnum>>
     {
+        public RegisterUserCommand(string username, string password, string email)
+        {
+            Username = username;
+            Email = email;
+            Password = password;
+        }
+
         public RegisterUserCommand()
         {
             

@@ -3,6 +3,7 @@ using Data.Abstraction;
 using Data.Data;
 using Domain.DTO;
 using Domain.Entities;
+using Domain.Settings;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,21 +28,9 @@ namespace IoC
             services.AddScoped<IToDoUserDxo, ToDoUserDxo>();
             var assembly = AppDomain.CurrentDomain.Load("Services");
             services.AddMediatR(assembly);
-            services.AddIdentity<User, Role>(config =>
-                {
-                    config.Password.RequireDigit = false;
-                    config.Password.RequireNonAlphanumeric = false;
-                    config.Password.RequireLowercase = false;
-                    config.Password.RequireUppercase = false;
-                    config.Password.RequiredLength = 7;
-                })
-                .AddEntityFrameworkStores<DataContext>()
-                .AddDefaultTokenProviders();
-            var cong = configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<DataContext>(options => {
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-            });
-            
+            var jwtSection = configuration.GetSection("Jwt");
+            services.Configure<JwtSettings>(jwtSection);
+            var conf = configuration.GetConnectionString("DefaultConnection");
             return services;
 
         }

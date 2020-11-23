@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Abstraction", "Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoC", "IoC\IoC.csproj", "{65C5625A-78FE-4CAE-A823-71D526CA31DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{04EB6DB8-847E-4C42-B083-E8B1994DE26E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{8EF04E94-50FC-4F35-9C43-291EECA63E2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{65C5625A-78FE-4CAE-A823-71D526CA31DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65C5625A-78FE-4CAE-A823-71D526CA31DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65C5625A-78FE-4CAE-A823-71D526CA31DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04EB6DB8-847E-4C42-B083-E8B1994DE26E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EB6DB8-847E-4C42-B083-E8B1994DE26E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EB6DB8-847E-4C42-B083-E8B1994DE26E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EB6DB8-847E-4C42-B083-E8B1994DE26E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EF04E94-50FC-4F35-9C43-291EECA63E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EF04E94-50FC-4F35-9C43-291EECA63E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EF04E94-50FC-4F35-9C43-291EECA63E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EF04E94-50FC-4F35-9C43-291EECA63E2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

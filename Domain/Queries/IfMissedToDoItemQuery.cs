@@ -1,24 +1,23 @@
 ﻿using System;
 using CSharpFunctionalExtensions;
 using Domain.Common;
+using Domain.DTO;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Domain.Commands
 {
-    public class DeleteToDoItemCommand : IRequest<Result<Unit, ErrorsEnum>>
+    public class IfMissedToDoItemQuery : IRequest<Result<ToDoItemDto, ErrorsEnum>>
     {
-        public DeleteToDoItemCommand()
+        public IfMissedToDoItemQuery()
         {
             
         }
-
-        public DeleteToDoItemCommand(Guid id, Guid userId)
+        public IfMissedToDoItemQuery(Guid id, Guid userId)
         {
             Id = id;
             UserId = userId;
         }
-        
+
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
     }

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ToDo.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
     public class ApiControllerBase : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -25,14 +24,14 @@ namespace ToDo.Controllers
             }
 
             var result = await _mediator.Send(request);
-            return result.Match(
+            return Ok(result.Value); /*.Match(
                 value => Ok(value),
                 error => error switch
                 {
                     ErrorsEnum.UserNotFound => NotFound(),
                     ErrorsEnum.Forbidden => Forbid(),
                     _ => (IActionResult)BadRequest()
-                });
+                });*/
         }
         
     }

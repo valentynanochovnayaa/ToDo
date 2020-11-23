@@ -1,4 +1,5 @@
-﻿using Domain.DTO;
+﻿using System;
+using Domain.DTO;
 using Domain.Entities;
 using Service.Abstraction.Dxos;
 
@@ -13,7 +14,8 @@ namespace Services.Dxos
                 Name = entity.Name,
                 Description = entity.Description,
                 Deadline = entity.Deadline,
-                IsCompleted = entity.IsCompleted
+                IsCompleted = entity.IsCompleted,
+                IsMissed = true && (entity.Deadline < DateTimeOffset.Now)
             };
             return item;
         }

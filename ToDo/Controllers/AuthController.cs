@@ -12,8 +12,6 @@ using ToDo.DTO;
 
 namespace ToDo.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class AuthController: ApiControllerBase
     {
         public AuthController(IMediator mediator) : base(mediator)
@@ -27,7 +25,7 @@ namespace ToDo.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginUserCommand request)
+        public async Task<IActionResult> Login([FromBody]LoginUserCommand request)
         {
             return await SendRequestAsync(request);
         }

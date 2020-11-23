@@ -11,12 +11,11 @@ namespace Services.Dxos
         {
             var user = new User
             {
-                UserName  = command.Username,
+                UserName = command.Username,
                 Email = command.Email,
                 PasswordHash = command.Password,
             };
             return user;
         }
-        
     }
 }

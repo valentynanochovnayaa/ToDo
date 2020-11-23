@@ -10,7 +10,6 @@ namespace Domain.Entities
         {
             
         }
-
         public Guid Id { get; set; }
         public virtual ICollection<ToDoItem> ToDoItems { get; set; }
     }

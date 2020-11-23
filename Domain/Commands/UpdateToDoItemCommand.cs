@@ -19,6 +19,11 @@ namespace Domain.Commands
             IsCompleted = isCompleted;
         }
 
+        public UpdateToDoItemCommand(Guid id, Guid userId)
+        {
+            Id = id;
+            UserId = userId;
+        }
         public UpdateToDoItemCommand(Guid id, string name, string description, DateTimeOffset deadLine, bool isCompleted, Guid userId)
         {
             Id = id;

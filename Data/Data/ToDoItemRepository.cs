@@ -11,6 +11,8 @@ using Domain.DTO;
 using Domain.Entities;
 using Domain.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Service.Abstraction.Dxos;
 
 namespace Data.Data
@@ -71,6 +73,29 @@ namespace Data.Data
                 .Select(x => _dxo.Map(x)).ToListAsync();
             return dbitem;
         }
+
+        public async Task<Result<ToDoItemDto, ErrorsEnum>> GetToDoItem(GetToDoItemQuery getToDoItemQuery)
+        {
+            var dbitem = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions
+                .FirstOrDefaultAsync(_context.ToDoItems, i => i.Id == getToDoItemQuery.Id);
+            return _dxo.Map(dbitem);
+        }
         
+        public async Task<Result<Guid, ErrorsEnum>> SetCompletedTrue(SetCompletedTrueCommand setCompletedTrueCommand)
+        {
+            var item = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions
+                .FirstOrDefaultAsync(_context.ToDoItems, i => i.Id == setCompletedTrueCommand.ToDoItemId);
+            item.IsCompleted = true;
+            await _context.SaveChangesAsync();
+            return item.Id;
+        }
+        
+        public async Task<Result<ToDoItemDto, ErrorsEnum>> IfMissedToDoItem(IfMissedToDoItemQuery ifMissedToDoItemCommand)
+        {
+            var item = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions
+                .FirstOrDefaultAsync(_context.ToDoItems, i => i.Id == ifMissedToDoItemCommand.Id);
+            var dto = _dxo.Map(item);
+            return dto;
+        }
     }
 }

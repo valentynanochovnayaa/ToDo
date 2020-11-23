@@ -13,7 +13,7 @@ namespace Data.DataConfigurations
            builder
            .HasOne<User>()
            .WithMany(t => t.ToDoItems)
-           .HasForeignKey("UserId");
+           .HasForeignKey(nameof(ToDoItem.UserId));
         }
     }
 }

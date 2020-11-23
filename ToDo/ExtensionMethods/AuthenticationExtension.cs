@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using ToDo.Settings;
 
 namespace ToDo.ExtensionMethods
 {
@@ -21,13 +20,15 @@ namespace ToDo.ExtensionMethods
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
+                options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidIssuer = "localhost",
-                    ValidAudience = "localhost"
+                    ValidAudience = "localhost",
+                    ClockSkew = TimeSpan.Zero
                 };
                 options.Events = new JwtBearerEvents
                 {
@@ -57,3 +58,46 @@ namespace ToDo.ExtensionMethods
         }
     }
 }
+
+/*services.AddAuthentication((cfg =>
+            {
+                cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = Configuration["JwtSecurityToken:Issuer"],
+                    ValidAudience = Configuration["JwtSecurityToken:Audience"],
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityToken:Key"])),
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            (path.StartsWithSegments("/chat") || path.StartsWithSegments("/hub")))
+                            context.Token = accessToken;
+
+                        return Task.CompletedTask;
+                    },
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Access-Control-Expose-Headers", "Token-Expired");
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
+            });*/
