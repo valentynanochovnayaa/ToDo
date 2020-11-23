@@ -82,7 +82,7 @@ namespace IntegrationTests
             return dto;
         }
 
-        [Fact]
+        /*[Fact]
         public async Task SetCompletedItem_ValidParams_ShouldReturnId()
         {
             //arrange
@@ -100,7 +100,7 @@ namespace IntegrationTests
             query.Id = setCompleted.Value;
             var returnItem = await GetToDoItem(query);
             Assert.True(returnItem.IsCompleted);
-        }
+        }*/
 
         /*[Fact]
         public async Task SetCompletedItem_WithValidParams_ShouldReturn200()
