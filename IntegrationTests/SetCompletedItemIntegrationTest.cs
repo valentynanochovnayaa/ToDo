@@ -102,7 +102,7 @@ namespace IntegrationTests
             Assert.True(returnItem.IsCompleted);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task SetCompletedItem_WithValidParams_ShouldReturn200()
         {
             #region Arrange
@@ -146,6 +146,7 @@ namespace IntegrationTests
 
             #endregion
         }
+        */
 
         [Fact]
         public async Task SetCompletedItemAuthorize_WithValidParams_ShouldReturn200()
