@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Data.Data;
 using Domain.Entities;
@@ -10,13 +12,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.SpaServices.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToDo.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Services.Services;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using ToDo.ExtensionMethods;
 
 namespace ToDo
@@ -38,7 +43,11 @@ namespace ToDo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddServices(_config);
-            services.AddControllersWithViews();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder => builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
+            });
             services.AddIdentity<User, Role>(config =>
                 {
                     config.Password.RequireDigit = false;
@@ -65,6 +74,40 @@ namespace ToDo
                 });
 
             }
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
+            });
             // In production, the Angular files will be served from this directory
         }
 
@@ -82,12 +125,19 @@ namespace ToDo
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            if (!env.IsDevelopment() && !env.IsEnvironment("Testing"))
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDoAPI");
+                c.RoutePrefix = string.Empty;
+            });
+            //app.UseHttpsRedirection();
+            /*app.UseStaticFiles();
+            app.UseSpaStaticFiles();*/
+            /*if (!env.IsDevelopment() && !env.IsEnvironment("Testing") && !env.IsProduction())
             {
                 app.UseSpaStaticFiles();
-            }
+            }*/
 
             app.UseExceptionHandler(a => a.Run(async context =>
             {
