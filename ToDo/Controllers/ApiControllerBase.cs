@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ToDo.Controllers
 {
     [ApiController]
+    [Produces("application/json")]
     public class ApiControllerBase : ControllerBase
     {
         private readonly IMediator _mediator;

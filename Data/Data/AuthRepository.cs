@@ -28,11 +28,11 @@ namespace Data.Data
             _dxo = dxo;
             _userManager = userManager;
         }
-        public async Task<User> Register(RegisterUserCommand registerUserCommand)
+        public async Task<Result<Unit, ErrorsEnum>> Register(RegisterUserCommand registerUserCommand)
         {
             var user = _dxo.Map(registerUserCommand);
             var result = await _userManager.CreateAsync(user, registerUserCommand.Password);
-            return user;
+            return Unit.Value;
         }
 
         public async Task<Result<TokenDto, ErrorsEnum>> Login(LoginUserCommand loginUserCommand)

@@ -34,7 +34,7 @@ namespace ToDo.Controllers
             return await SendRequestAsync(request);
         }
         [Authorize]
-        [HttpPut("todoitems/{id}")]
+        [HttpPut("users/{userId}/todoitems/{id}")]
         public async Task<IActionResult> UpdateToDoItem([FromBody]UpdateToDoItemCommand request,[FromRoute]Guid id)
          {
              var userid = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -43,7 +43,7 @@ namespace ToDo.Controllers
              return await SendRequestAsync(request);
         }
         [Authorize]
-        [HttpDelete("todoitems/{id}")]
+        [HttpDelete("users/{userId}/todoitems/{id}")]
         public async Task<IActionResult> DeleteToDoItem(DeleteToDoItemCommand request, [FromRoute]Guid id)
         {
             var userid = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -51,7 +51,7 @@ namespace ToDo.Controllers
             request.UserId = Guid.Parse(userid);
             return await SendRequestAsync(request);
         }
-        [HttpGet("")]
+        [HttpGet("users/{userId}/todoitems/get")]
         public async Task<IActionResult> GetToDoItems(GetToDoItemsQuery request)
         {
             var userid = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -79,12 +79,10 @@ namespace ToDo.Controllers
                 throw;
             }
         }
-
         [HttpGet("users/{userId}/todoitems/{id}/ifmissed")]
         public async Task<IActionResult> IfMissedToDoItem([FromRoute] Guid userId, [FromRoute] Guid id)
         {
             return await SendRequestAsync(new IfMissedToDoItemQuery(id, userId));
         }
-        
     }
 }
