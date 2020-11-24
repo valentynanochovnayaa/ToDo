@@ -30,7 +30,7 @@ namespace IoC
             services.AddMediatR(assembly);
             var jwtSection = configuration.GetSection("Jwt");
             services.Configure<JwtSettings>(jwtSection);
-            var conf = configuration.GetConnectionString("DefaultConnection");
+            //var conf = configuration.GetConnectionString("DefaultConnection");
             return services;
 
         }

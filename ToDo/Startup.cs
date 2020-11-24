@@ -70,7 +70,7 @@ namespace ToDo
             {
                 services.AddTokenAuthentication(_config);
                 services.AddDbContext<DataContext>(options => {
-                    options.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
+                    options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
                 });
 
             }
